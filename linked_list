@@ -18,6 +18,7 @@ count = 0
 for lists in contents:
     count += 1
     print(f"list {count}: {lists}")
+    # Need to access top line to turn into a list
     list_1 = lists.split(",")
     list_2 = lists.split(",")
 
