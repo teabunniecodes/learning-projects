@@ -16,7 +16,6 @@ with open(file) as read:
 
 print(original)
 length = len(original)
-print(length)
 
 x = 0
 y = 0
@@ -31,12 +30,15 @@ for int in original:
         list_[y] = split_list
         print(f"list_{y}: {list_[y]}")
     x += 1
-    print(split_list)
+    #print(split_list)
 
-if z < length:
+while z < length:
     merge_list = list_[z]
     z += 1
     merge_list = merge_list + list_[z]
     print(f"Merged List: {merge_list}")
-    sort_list = merge_list.sort()
-    print(f"Sorted list: {sort_list}")
+
+# Need to still change the list of strings to int before sort.
+
+merge_list.sort()
+print(f"Sorted list: {merge_list}")
