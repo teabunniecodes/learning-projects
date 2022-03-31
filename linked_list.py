@@ -6,6 +6,7 @@
 
 # Personal Projects/Text Files/number_list.txt
 # Python/Self Projects/Text Files/number_list.txt 
+
 file = input("Path of text file: ")
 
 with open(file) as read:
@@ -22,9 +23,9 @@ y = 0
 z = 1
 list_ = {}
 
-for int in original:
-    list = original[x]
-    split_list = list.split(", ")
+for j in original:
+    lists = original[x]
+    split_list = lists.split(", ")
     if y < length:
         y += 1
         list_[y] = split_list
@@ -32,13 +33,25 @@ for int in original:
     x += 1
     #print(split_list)
 
-while z < length:
-    merge_list = list_[z]
-    z += 1
-    merge_list = merge_list + list_[z]
-    print(f"Merged List: {merge_list}")
+print(f"I WANT THIS: {list_[length - (length - 1)] + list_[length - (length - 2)] + list_[length - (length - 3)] + list_[length ]}")
 
+def merging(list_name):
+    i = length - 1
+    while i <= length and i > 0:
+        i -= 1
+        list_name += list_[length - i]
+    return list_name
+    
+merge_list = merging(list_[z])
+
+print(f"Merged List: {merge_list}")
+
+#for y in list_[y]:
+#    merge_list = merging(list_[y])
 # Need to still change the list of strings to int before sort.
+
+merge_list = list(map(int, merge_list))
+print(f"Int List: {merge_list}")
 
 merge_list.sort()
 print(f"Sorted list: {merge_list}")
