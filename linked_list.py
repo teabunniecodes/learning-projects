@@ -4,23 +4,24 @@
 # file, read in each line as a separate linked list, merge the \
 # two lists together, then print the output.
 
-list_1 = []
-list_2 = []
 
+
+# file path - Personal Projects/Text Files/number_list.txt
 file = input("Path of text file: ")
 
-with open(file) as file:
-    contents = file.readlines()
+with open(file) as read:
+    contents = read.read()
     print(contents)
-    file.close()
+    original = contents.split("\n")
+    read.close()
 
-count = 0
-for lists in contents:
-    count += 1
-    print(f"list {count}: {lists}")
-    # Need to access top line to turn into a list
-    list_1 = lists.split(",")
-    list_2 = lists.split(",")
+print(original)
 
-print(list_1)
-print(list_2)
+x = 0
+for int in original:
+    list = original[x]
+    print(list.split())
+    x +=1
+    #combined = original[x-1] - original [x]
+
+print()
