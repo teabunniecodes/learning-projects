@@ -59,3 +59,4 @@ class hangMan:
 
 hangman = hangMan()
 hangman.theWord()
+hangman.guesses()
