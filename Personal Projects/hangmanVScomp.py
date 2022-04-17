@@ -25,37 +25,58 @@ class hangMan:
     def turnsLeft(self):
         # each time a wrong guess remove 1 from tries left
         self.turns -= 1
-        print("You have {turns} turn(s) left")
+        print(f"You have {self.turns} turn(s) left")
 
     def guesses(self):
         while self.turns > 0:
             # asks user for input and turns input into upper case
-            guess = input("Please input a letter or guess: ").upper()
-            print(guess)
-            # checks if it is one letter
-            if len(guess) == 1 and guess.isalpha():
-                # check if the letter has been guessed yet
-                if guess in self.guessed:
-                    print("You have already guessed this letter.")
-                    print(f"Letters you have chosen: {self.guessed}")
-                elif guess == self.chosenWord: #when user correctly guesses
-                    self.guessed.add(guess)
-                    if guess in self.chosenWord:
-                        x = self.chosenWord.find(guess)
-                        self.guessWord[x] = guess
-                        # prints out the letters in the correct spaces
-                        print(''.join(self.guessWord))
-                elif guess != self.chosenWord: # when user incorrectly guesses
-                    turns = 0
-                    print("Game Over!")
+            self.guess = input("Please input a letter or guess: ").upper()
+            self.checkGuess()
+
+    def checkGuess(self):
+        # checks if it is one letter
+        if len(self.guess) == 1 and self.guess.isalpha():
+            # check if the letter has been guessed yet
+            if self.guess in self.guessed:
+                print("You have already guessed this letter.")
+                print(f"Letters you have chosen: {set(self.guessed)}")
+                self.guesses()
+            elif self.guess != self.guessed:
+                if self.guess in self.chosenWord:
+                    self.guessed.add(self.guess)
+                    x = self.chosenWord.find(self.guess)
+                    self.guessWord[x] = self.guess
+                # prints out the letters in the correct spaces
+                print(''.join(self.guessWord))
+                if self.guess not in self.chosenWord:
+                    self.guessed.add(self.guess)
+                    print(f"Sorry, letter {self.guess} is not in the word")
+                    self.turnsLeft()
+        self.invalidGuess()
+        self.userWin()
+        self.userLose()
+
+    def invalidGuess(self):
+        # when user inputs more than 1 letter and less than word length give error
+        if (len(self.guess) > 1 and len(self.guess) < len(self.chosenWord)) or len(self.guess) > len(self.chosenWord):
+            print("Please input a one letter or a valid guess")
+            self.guesses()
+
+    def userWin(self):
+        # computer will compare the string to original string if it matches
+        # matches user wins
+        if self.guess == self.chosenWord: #when user correctly guesses
+            self.turns = 0
+            print("You Win!")
+
+    def userLose(self):
+        # doesn't match, computer wins! (doesn't matter how many tries left)
+        if self.guess != self.chosenWord and len(self.guess) == len(self.chosenWord):
+            self.turns = 0
+            if self.turns == 0:
+                print("Game Over!")
 
 # figure out how to check for duplicates in the word
-# when user inputs more than 1 letter and less than word length give error
-# figure out how/when to count down turns during wrong guesses
-
-        # computer will compare the string to original string if it matches
-            # matches user wins
-            # doesn't match, computer wins! (doesn't matter how many tries left)
 
 hangman = hangMan()
 hangman.theWord()
