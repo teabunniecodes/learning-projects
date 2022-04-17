@@ -13,7 +13,7 @@ class hangMan:
 
     """ Generates Random Word
         no input
-        no str
+        return str
     """
     def generateRandomWord(self) -> str:
             # computer pulls random word from file
@@ -31,7 +31,7 @@ class hangMan:
 
 
     """ guesses - starts game
-        input turns
+        input
         return nothing
     """
     def guesses(self) -> None:
@@ -104,7 +104,7 @@ class hangMan:
         return False
 
     """ Checks if Game is over
-        return nothing
+        return none
     """
     def isGameOver(self) -> None:
         # computer will compare the string to original string if it matches
@@ -127,6 +127,7 @@ class hangMan:
             print("sorry you lose!")
             self.turns = 0
             self.playAgain()
+            
     """PlayAgain checks if users wants to play again
         input none
         return none
