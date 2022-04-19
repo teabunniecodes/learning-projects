@@ -8,7 +8,7 @@ class hangMan:
         # set the list of letters
         self.guessed = set()
 
-    def theWord(self):
+    def getWord(self):
         # computer pulls random word from file
         with open("Personal Projects\Text Files\wordlist.txt") as read:
             words = list(map(str, read))
@@ -22,16 +22,20 @@ class hangMan:
             print(f"Guess the word: {''.join(self.guessWord)}")
 
     # limit the amount of wrong guesses to 6
-    def turnsLeft(self):
+    def showTurns(self):
         # each time a wrong guess remove 1 from tries left
-        self.turns -= 1
         print(f"You have {self.turns} turn(s) left")
 
-    def guesses(self):
+    def getGuess(self):
         while self.turns > 0:
             # asks user for input and turns input into upper case
             self.guess = input("Please input a letter or guess: ").upper()
+            # ty liplounge!  add [0] to end of input (restricts input to one character)
             self.checkGuess()
+            self.isInvalid()
+            self.getLose()
+            self.isWin()
+            self.isLose()
 
     def checkGuess(self):
         # checks if it is one letter
@@ -40,44 +44,43 @@ class hangMan:
             if self.guess in self.guessed:
                 print("You have already guessed this letter.")
                 print(f"Letters you have chosen: {set(self.guessed)}")
-                self.guesses()
             elif self.guess != self.guessed:
-                if self.guess in self.chosenWord:
+                # loops through to check duplicate letters and assign to the index
+                for index, letter in enumerate(self.chosenWord):
                     self.guessed.add(self.guess)
-                    x = self.chosenWord.find(self.guess)
-                    self.guessWord[x] = self.guess
+                    if self.guess == self.chosenWord[index] and self.guess == letter:
+                        self.guessWord[index] = self.guess
                 # prints out the letters in the correct spaces
                 print(''.join(self.guessWord))
                 if self.guess not in self.chosenWord:
                     self.guessed.add(self.guess)
                     print(f"Sorry, letter {self.guess} is not in the word")
-                    self.turnsLeft()
-        self.invalidGuess()
-        self.userWin()
-        self.userLose()
+                    self.turns -= 1
+                    self.showTurns()
 
-    def invalidGuess(self):
+    def isInvalid(self):
         # when user inputs more than 1 letter and less than word length give error
         if (len(self.guess) > 1 and len(self.guess) < len(self.chosenWord)) or len(self.guess) > len(self.chosenWord):
             print("Please input a one letter or a valid guess")
-            self.guesses()
 
-    def userWin(self):
-        # computer will compare the string to original string if it matches
-        # matches user wins
-        if self.guess == self.chosenWord: #when user correctly guesses
-            self.turns = 0
-            print("You Win!")
-
-    def userLose(self):
+    def getLose(self):
         # doesn't match, computer wins! (doesn't matter how many tries left)
         if self.guess != self.chosenWord and len(self.guess) == len(self.chosenWord):
             self.turns = 0
-            if self.turns == 0:
-                print("Game Over!")
+
+    def isWin(self):
+        # computer will compare the string to original string if it matches
+        # matches user wins
+        if self.guess == self.chosenWord: #when user correctly guesses
+            print("You Win!")
+
+    def isLose(self):
+        # if there are no more turns left and the user hasn't won
+        if self.turns == 0:
+            print("Game Over!")
 
 # figure out how to check for duplicates in the word
 
 hangman = hangMan()
-hangman.theWord()
-hangman.guesses()
+hangman.getWord()
+hangman.getGuess()
