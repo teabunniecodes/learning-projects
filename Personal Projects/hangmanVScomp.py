@@ -37,11 +37,13 @@ class hangMan:
         while True:
             if (len(self.guess) == 1 and self.guess.isalpha()) or (len(self.guess) == len(self.chosenWord)):
                 break
+            else:
+                break
         self.isWin()
         self.getLose()
-        self.isLose()
         self.checkGuessed()
         self.isInvalid()
+        self.isLose()
 
     def checkGuessed(self):
         # check if the letter has been guessed yet
@@ -83,6 +85,7 @@ class hangMan:
         # if there are no more turns left and the user hasn't won
         if self.turns == 0:
             print("Game Over!")
+            print(f"The word was {self.chosenWord}")
             exit()
 
 hangman = hangMan()
