@@ -32,31 +32,36 @@ class hangMan:
             self.guess = input("Please input a letter or guess: ").upper()
             # ty liplounge!  add [0] to end of input (restricts input to one character)
             self.checkGuess()
-            self.isInvalid()
-            self.getLose()
-            self.isWin()
-            self.isLose()
 
     def checkGuess(self):
         # checks if it is one letter
-        if len(self.guess) == 1 and self.guess.isalpha():
-            # check if the letter has been guessed yet
-            if self.guess in self.guessed:
-                print("You have already guessed this letter.")
-                print(f"Letters you have chosen: {set(self.guessed)}")
-            elif self.guess != self.guessed:
-                # loops through to check duplicate letters and assign to the index
-                for index, letter in enumerate(self.chosenWord):
-                    self.guessed.add(self.guess)
-                    if self.guess == self.chosenWord[index] and self.guess == letter:
-                        self.guessWord[index] = self.guess
-                # prints out the letters in the correct spaces
-                print(''.join(self.guessWord))
-                if self.guess not in self.chosenWord:
-                    self.guessed.add(self.guess)
-                    print(f"Sorry, letter {self.guess} is not in the word")
-                    self.turns -= 1
-                    self.showTurns()
+        while True:
+            if (len(self.guess) == 1 and self.guess.isalpha()) or (len(self.guess) == len(self.chosenWord)):
+                break
+        self.isWin()
+        self.getLose()
+        self.isLose()
+        self.checkGuessed()
+        self.isInvalid()
+
+    def checkGuessed(self):
+        # check if the letter has been guessed yet
+        if self.guess in self.guessed:
+            print("You have already guessed this letter.")
+            print(f"Letters you have chosen: {set(self.guessed)}")
+        elif self.guess != self.guessed:
+            # loops through to check duplicate letters and assign to the index
+            for index, letter in enumerate(self.chosenWord):
+                self.guessed.add(self.guess)
+                if self.guess == self.chosenWord[index] and self.guess == letter:
+                    self.guessWord[index] = self.guess
+            print(''.join(self.guessWord))
+            # prints out the letters in the correct spaces
+            if self.guess not in self.chosenWord and len(self.guess) == 1:
+                self.guessed.add(self.guess)
+                print(f"Sorry, letter {self.guess} is not in the word")
+                self.turns -= 1
+                self.showTurns()
 
     def isInvalid(self):
         # when user inputs more than 1 letter and less than word length give error
@@ -71,15 +76,15 @@ class hangMan:
     def isWin(self):
         # computer will compare the string to original string if it matches
         # matches user wins
-        if self.guess == self.chosenWord: #when user correctly guesses
+        if self.guess == self.chosenWord:
             print("You Win!")
+            exit()
 
     def isLose(self):
         # if there are no more turns left and the user hasn't won
         if self.turns == 0:
             print("Game Over!")
-
-# figure out how to check for duplicates in the word
+            exit()
 
 hangman = hangMan()
 hangman.getWord()
