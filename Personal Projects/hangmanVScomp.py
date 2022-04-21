@@ -14,7 +14,6 @@ class hangMan:
             words = list(map(str, read))
             self.chosenWord = random.choice(words).strip()
             self.chosenWord = self.chosenWord.upper()
-            print(self.chosenWord)
             # find the length of the word but don't show it
             self.guessWord = ["-"] * len(self.chosenWord)
             # display "_ " for each letter space
