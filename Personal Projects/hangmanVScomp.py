@@ -30,26 +30,19 @@ class hangMan:
             # asks user for input and turns input into upper case
             self.guess = input("Please input a letter or guess: ").upper()
             # ty liplounge!  add [0] to end of input (restricts input to one character)
-            self.checkGuess()
-
-    def checkGuess(self):
-        # checks if it is one letter
-        while True:
             if (len(self.guess) == 1 and self.guess.isalpha()) or (len(self.guess) == len(self.chosenWord)):
-                break
+                self.checkGuessed()
+                self.isWin()
+                self.getLose()
             else:
-                break
-        self.isWin()
-        self.getLose()
-        self.checkGuessed()
-        self.isInvalid()
+                self.isInvalid()
         self.isLose()
 
     def checkGuessed(self):
         # check if the letter has been guessed yet
         if self.guess in self.guessed:
             print("You have already guessed this letter.")
-            print(f"Letters you have chosen: {set(self.guessed)}")
+            print(f"Letters you have chosen: {', '.join(self.guessed)}")
         elif self.guess != self.guessed:
             # loops through to check duplicate letters and assign to the index
             for index, letter in enumerate(self.chosenWord):
@@ -66,8 +59,7 @@ class hangMan:
 
     def isInvalid(self):
         # when user inputs more than 1 letter and less than word length give error
-        if (len(self.guess) > 1 and len(self.guess) < len(self.chosenWord)) or len(self.guess) > len(self.chosenWord):
-            print("Please input a one letter or a valid guess")
+        print("Please input a one letter or a valid guess")
 
     def getLose(self):
         # doesn't match, computer wins! (doesn't matter how many tries left)
@@ -83,10 +75,9 @@ class hangMan:
 
     def isLose(self):
         # if there are no more turns left and the user hasn't won
-        if self.turns == 0:
-            print("Game Over!")
-            print(f"The word was {self.chosenWord}")
-            exit()
+        print("Game Over!")
+        print(f"The word was {self.chosenWord}")
+        exit()
 
 hangman = hangMan()
 hangman.getWord()
