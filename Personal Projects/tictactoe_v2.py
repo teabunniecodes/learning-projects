@@ -21,7 +21,12 @@ class tictactoe():
     def turns(self):
         while self.turn < 9 and self.winner == False:
             # takes user input and checks that it is a valid input
-            self.space = int(input("Please enter a number 1-9: "))
+            while True:
+                try:
+                    self.space = int(input(f"It is {self.player}'s turn. Please enter a number 1-9: "))
+                    break
+                except:
+                    print(f"That's not a number between 1-9 Player {self.player}!!!! >:O")
             # checks if the board is empty in the space that the user has chosen
             if theBoard[self.space] == " " and self.space > 0 and self.space < 10:
                 # places an X in the space if it is a valid input when it is X's turn
