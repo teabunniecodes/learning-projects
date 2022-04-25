@@ -3,7 +3,21 @@ import random
 theBoard = {
 1 : " ", 2 : " ", 3 : " ", 4 : " ", 5 : " ", 6 : " ", 7 : " ", 8 : " ", 9 : " "
 }
-x = 0
+theWins = [
+    # horizantal wins
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+
+    # vertical wins
+    [1, 4, 7],
+    [2, 5, 8],
+    [3, 6, 9],
+
+    # diagonal wins
+    [1, 5, 9],
+    [3, 5, 7],
+]
 
 class TicTacToe:
     def __init__(self):
@@ -47,13 +61,21 @@ class TicTacToe:
         print(f"This was turn {self.turns}")     
 
     def isTurn(self):
-        while self.turns < 9 or self.win == False:
+        while self.turns < 9 and self.win == False:
             if self.turns % 2 == 0:
                 self.getMove()
             elif self.turns % 2 == 1:
                 self.getCompmove()
             self.addTurns()
-        print(theBoard)
+            self.getWin()
+
+
+    def getWin(self):
+        for win in theWins:
+            if (theBoard[win[0]] == theBoard[win[1]] == theBoard[win[2]]) and theBoard[win[0]] != " ":
+                self.win = True
+                self.makeBoard()
+                print(f"Player {theBoard[win[0]]} has won!")
 
 tictactoe = TicTacToe()
 tictactoe.makeBoard()

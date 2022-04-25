@@ -47,7 +47,7 @@ class tictactoe():
 
     # defines how to win the game and checks if met
     def wins(self):
-        if (theBoard[1] == theBoard [2] == theBoard [3]) and theBoard[1] != " ":
+        if (theBoard[1] == theBoard[2] == theBoard[3]) and theBoard[1] != " ":
             self.winner = True
             print(f"Congrats {self.player} has won!")
         elif (theBoard[1] == theBoard[4] == theBoard[7]) and theBoard[1] != " ":
