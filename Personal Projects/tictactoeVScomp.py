@@ -68,7 +68,6 @@ class TicTacToe:
             self.addTurns()
             self.getWin()
 
-
     def getWin(self):
         for win in theWins:
             if (theBoard[win[0]] == theBoard[win[1]] == theBoard[win[2]]) and theBoard[win[0]] != " ":

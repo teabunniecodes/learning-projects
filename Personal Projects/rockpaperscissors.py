@@ -1,4 +1,3 @@
-from pydoc import plain
 import random
 
 moves = ['r', 'p', 's']
