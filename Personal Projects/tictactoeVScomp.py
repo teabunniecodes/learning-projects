@@ -57,8 +57,7 @@ class TicTacToe:
             self.getCompmove()
 
     def addTurns(self):
-        self.turns += 1
-        print(f"This was turn {self.turns}")     
+        self.turns += 1   
 
     def isTurn(self):
         while self.turns < 9 and self.win == False:
