@@ -3,6 +3,22 @@ theBoard = {
     1 : " ", 2 : " ", 3 : " ", 4 : " ", 5 : " ", 6 : " ", 7 : " ", 8 : " ", 9 : " "
 }
 
+theWins = [
+    # horizantal win conditions
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+
+    # vertical win conditions
+    [1, 4, 7],
+    [2, 5, 8],
+    [3, 6, 9],
+    
+    # diagonal win conditions
+    [1, 5, 9],
+    [3, 5, 7]
+]
+
 class tictactoe():
     def __init__(self):
         self.player = "X"
@@ -47,30 +63,9 @@ class tictactoe():
 
     # defines how to win the game and checks if met
     def wins(self):
-        if (theBoard[1] == theBoard[2] == theBoard[3]) and theBoard[1] != " ":
-            self.winner = True
+        if any((theBoard[win[0]] != " ") and (theBoard[win[0]] == theBoard[win[1]] == theBoard[win[2]]) for win in theWins):
             print(f"Congrats {self.player} has won!")
-        elif (theBoard[1] == theBoard[4] == theBoard[7]) and theBoard[1] != " ":
-            self.winner = True
-            print(f"Congrats {self.player} has won!")
-        elif (theBoard[1] == theBoard[5] == theBoard[9]) and theBoard[1] != " ":
-            self.winner = True
-            print(f"Congrats {self.player} has won!")
-        elif (theBoard[2] == theBoard[5] == theBoard[8]) and theBoard[2] != " ":
             self.winner = True  
-            print(f"Congrats {self.player} has won!")
-        elif (theBoard[3] == theBoard[6] == theBoard[9]) and theBoard[3] != " ":
-            self.winner = True
-            print(f"Congrats {self.player} has won!")
-        elif (theBoard[3] == theBoard[5] == theBoard[7]) and theBoard[3] != " ":
-            self.winner = True
-            print(f"Congrats {self.player} has won!")
-        elif (theBoard[4] == theBoard[5] == theBoard[6]) and theBoard[4] != " ":
-            self.winner = True
-            print(f"Congrats {self.player} has won!")
-        elif (theBoard[7] == theBoard[8] == theBoard[9]) and theBoard[7] != " ":
-            self.winner = True
-            print(f"Congrats {self.player} has won!")                
 
 game = tictactoe()
 game.board()
