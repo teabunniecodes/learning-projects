@@ -6,6 +6,7 @@ verbList = []
 advList = []
 
 def punc(grammar):
+    # remove any punctuation the user may have inputted
     grammar = grammar.translate(str.maketrans(" ", " ", string.punctuation))
     grammar = grammar.split(" ")
     return grammar
