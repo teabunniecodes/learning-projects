@@ -6,8 +6,8 @@ class Minesweeper:
     boardRows = 4
     boardCols = 4
     numMines = 3
-    setMines = set()
-    flagMines = set()
+    # flagMines = set()
+    dictSpace = {}
     countMines = 0
     def makeBoard(self):
             # beginner = 9x9 w/ 10 mines
@@ -19,54 +19,45 @@ class Minesweeper:
             self.gameBoard = " ".join(x)
             print(self.gameBoard)
         
+        # for r in range(self.boardRows):
+        #     for c in range(self.boardCols):
+        #         self.dictSpace[(r, c)] = " "
+        # print(self.dictSpace)
+
     def placeMines(self):
         # check how many mines we have placed
         while self.countMines < self.numMines:
             # randomly place the mines / find coordinates for row and colum
-            coorMine = random.choice(range(self.boardRows)), random.choice(range(self.boardCols))
+            mineRow = random.choice(range(self.boardRows))
+            mineCols = random.choice(range(self.boardCols))
+            coorMine = mineRow, mineCols
             # check if a mine is already there
             # if there is a mine already there, pass
-            if coorMine in self.setMines:
+            if coorMine in self.dictSpace:
                 pass
             # if the no mine / replace the space with mine
-            elif coorMine != self.setMines:
-                self.setMines.add(coorMine)
+            elif coorMine != self.dictSpace:
+                self.dictSpace[coorMine] = "*"
                 # if true will add a mine to the counter
                 self.countMines += 1
-        print(self.setMines)
+                self.placeNums(mineRow, mineCols)
+        print(self.dictSpace)
 
-    def placeNums(self):
-        self.count = 0
-        for coords in self.setMines:
-                print(coords)
-        # we need to pull coordinates from the set of Mines
-            # run through checking the coordinates surrounding the mines and assigning value to the coord
-                # use a dictionary with the number space coordinates as the key
-                    # value will be the number of mines that it is touching
-# check for adjacents in 2d array
-        # add count to top left
-        # (r - 1, c - 1)
-
-        # add count to top center
-        # (r - 1, c)
-
-        # add count to top right
-        # (r - 1, c + 1)
-
-        # add count to left side
-        # (r, c - 1)
-
-        # add count to right side
-        # (r, c + 1)
-
-        # add count to bottom left
-        # (r + 1, c - 1)
-
-        # add count to bottom center
-        # (r + 1, c)
-
-        # add count to bottom right
-        # (r + 1, c + 1)
+    # method will use the coordinates of the mines that are placed
+    def placeNums(self, row, col):
+        # finds coordinate of top left, top center, top right, left side, right side, bottom left, bottom center, bottom right surrounding the mine
+        spaceList = [(row - 1, col - 1), (row - 1, col), (row - 1, col + 1), (row, col - 1), (row, col + 1), (row + 1, col - 1), (row + 1, col), (row + 1, col + 1)]
+        # goes through the coordinates one by one
+        for space in spaceList:
+            # checks to see if the coordinate is a valid coordinate on the board - skips it if it is not
+            if space[0] < 0 or space[1] < 0 or space[0] > (self.boardRows - 1) or space[1] > (self.boardCols - 1):
+                continue
+            # if the coordinate is not in the dictionary yet, adds key and value
+            if space not in self.dictSpace:
+                self.dictSpace[space] = 1
+            # if the coordinate is already a key, increments the value up by 1
+            elif space in self.dictSpace and self.dictSpace[space] != "*" and self.dictSpace[space] != "M":
+                self.dictSpace[space] += 1
 
     def userMove(self):
         # when coordinate is inputed (row x column) checks the space
@@ -76,12 +67,14 @@ class Minesweeper:
 
     def checkMove(self):
         # if mine is there at coordinate - game over
-        if self.move in self.setMines:
-            print("Game Over!")
-        # if self.move != self.setMines:
+        if self.move in self.dictSpace:
+            # uncover space ************
+            if self.dictSpace[self.move] != "*":
+                print("REPLACE BOARD COORD WITH VALUE")
+            else:
+                print("Game Over!")
+        # if self.move != self.dictSpace:
             # if blank space - uses recursion to keep checking spaces until the space is not blank
-
-            # if number is there - just uncovers the single space
 
 
     # def uncoverSpace(self):
@@ -92,9 +85,8 @@ class Minesweeper:
 minesweeper = Minesweeper()
 minesweeper.makeBoard()
 minesweeper.placeMines()
-minesweeper.userMove()
-minesweeper.checkMove()
-minesweeper.placeNums()
+# minesweeper.userMove()
+# minesweeper.checkMove()
 
 
 # check each space to see if there is a mine next to it (when creating the board)
