@@ -14,7 +14,7 @@ class Minesweeper:
     countMines = 0
     countFlags = 0
     countSpaces = (boardRows * boardCols)
-    FLAG = "X"
+
     def makeBoard(self):
             # beginner = 9x9 w/ 10 mines
             # intermediate = 16x16 w/ 40 mines
@@ -41,23 +41,32 @@ class Minesweeper:
             self.move = input("Please enter a 'coordinate' to uncover a space or 'X, coordinate' to place or remove a flag: ").upper()
             self.move = self.move.translate(str.maketrans(string.punctuation, (" " * len(string.punctuation))))
             self.move = self.move.split()
+            print(self.move)
             if len(self.move) == 2:
-                self.move = tuple(map(int, self.move))
-                break
-            elif len(self.move) == 3 and self.move[0] == self.FLAG:
-                self.FLAG = tuple(map(int, self.move[1:]))
-                self.placeFlags()
+                try:
+                    self.move = tuple(map(int, self.move))
+                    print(self.move)
+                    break
+                except:
+                    print("NO! >:O")
+            elif len(self.move) == 3 and self.move[0] == "X":
+                try:
+                    self.flag = tuple(map(int, self.move[1:]))
+                    print(self.flag)
+                    self.placeFlags()
+                except:
+                    print("*BOOM* No flag for you! >:D")
             else:
                 print("Invalid input.  Please try again.")
 
     def placeFlags(self):
         if self.countFlags <= self.numMines:
-            if self.dictBoard[self.FLAG] == "O":
-                self.dictBoard[self.FLAG] = self.FLAG
+            if self.dictBoard[self.flag] == "O":
+                self.dictBoard[self.flag] = "X"
                 self.countFlags += 1
                 self.printBoard()
-            elif self.dictBoard[self.FLAG] == self.FLAG:
-                self.dictBoard[self.FLAG] = "O"
+            elif self.dictBoard[self.flag] == "X":
+                self.dictBoard[self.flag] = "O"
                 self.countFlags -= 1
                 self.printBoard()
             else:
@@ -145,8 +154,9 @@ class Minesweeper:
         self.gamePlay()
 
 minesweeper = Minesweeper()
-minesweeper.makeBoard()
-minesweeper.gamePlay()
+# minesweeper.makeBoard()
+# minesweeper.gamePlay()
+minesweeper.userMove()
 
 # print out the board again so user can see what is available
 # when all the blank spaces are uncovered - winner is pronounced!
