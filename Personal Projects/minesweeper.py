@@ -1,16 +1,20 @@
 import random
 import string
 
+# echo -e "\e[1;33;40m Yellow on black \e[m"
+
 class Minesweeper:
     # build board and define how many mines/level
-    boardRows = 3
-    boardCols = 3
-    numMines = 2
+    boardRows = 9
+    boardCols = 9
+    numMines = 1
     # flagMines = set()
     dictBoard = {}
     dictSpace = {}
     countMines = 0
     countFlags = 0
+    countSpaces = (boardRows * boardCols)
+    FLAG = "X"
     def makeBoard(self):
             # beginner = 9x9 w/ 10 mines
             # intermediate = 16x16 w/ 40 mines
@@ -34,29 +38,30 @@ class Minesweeper:
     def userMove(self): # TODO fix validity checker
         # when coordinate is inputed (row x column) checks the space
         while True:
-            self.move = input("Please enter a 'coordinate' to uncover a space or 'M coordinate' to place or remove a flag: ").upper()
+            self.move = input("Please enter a 'coordinate' to uncover a space or 'X, coordinate' to place or remove a flag: ").upper()
             self.move = self.move.translate(str.maketrans(string.punctuation, (" " * len(string.punctuation))))
             self.move = self.move.split()
             if len(self.move) == 2:
                 self.move = tuple(map(int, self.move))
                 break
-            elif len(self.move) == 3 and self.move[0] == "M":
-                self.flag = tuple(map(int, self.move[1:]))
+            elif len(self.move) == 3 and self.move[0] == self.FLAG:
+                self.FLAG = tuple(map(int, self.move[1:]))
                 self.placeFlags()
             else:
                 print("Invalid input.  Please try again.")
 
     def placeFlags(self):
         if self.countFlags <= self.numMines:
-            if self.dictBoard[self.flag] == "O":
-                self.dictBoard[self.flag] = "M"
+            if self.dictBoard[self.FLAG] == "O":
+                self.dictBoard[self.FLAG] = self.FLAG
                 self.countFlags += 1
                 self.printBoard()
-            elif self.dictBoard[self.flag] == "M":
-                self.dictBoard[self.flag] = "O"
+            elif self.dictBoard[self.FLAG] == self.FLAG:
+                self.dictBoard[self.FLAG] = "O"
                 self.countFlags -= 1
                 self.printBoard()
-
+            else:
+                pass
 
     def placeMines(self):
         # check how many mines we have placed
@@ -101,6 +106,7 @@ class Minesweeper:
             if self.move in self.dictSpace:
                 if self.dictSpace[self.move] != "*":
                     self.dictBoard[self.move] = self.dictSpace[self.move]
+                    self.countSpaces -= 1
                 else:
                     self.dictBoard[self.move] = self.dictSpace[self.move]
                     self.printBoard()
@@ -108,6 +114,7 @@ class Minesweeper:
                     exit()
             else:
                 self.dictBoard[self.move] = " "
+                self.countSpaces -= 1
                 self.uncoverSpace(self.move[0], self.move[1])
             self.printBoard()
 
@@ -119,14 +126,21 @@ class Minesweeper:
             if self.dictBoard[space] == "O":
                 if space not in self.dictSpace:
                     self.dictBoard[space] = " "
+                    self.countSpaces -= 1
                     self.uncoverSpace(space[0], space[1])
                 elif space in self.dictSpace and self.dictSpace[space] != "*":
                     self.dictBoard[space] = self.dictSpace[space]
+                    self.countSpaces -= 1
+                    
+    def userWin(self):
+        if self.countSpaces == self.countMines:
+            print("Congrats you won! :D")
+            exit()
 
     def gamePlay(self):
+        self.userWin()
         self.userMove()
         self.placeMines()
-        # self.printMines()
         self.checkMove()
         self.gamePlay()
 
