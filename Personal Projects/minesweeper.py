@@ -1,11 +1,12 @@
 import random
 import string
+from unittest import skip
 
 class Minesweeper:
     # build board and define how many mines/level
-    boardRows = 4
-    boardCols = 4
-    numMines = 3
+    boardRows = 16
+    boardCols = 16
+    numMines = 40
     # flagMines = set()
     dictBoard = {}
     dictSpace = {}
@@ -19,10 +20,14 @@ class Minesweeper:
         # for x in self.board: # try to use 2 loops to print without list
         #     self.gameBoard = " ".join(x)
         #     print(self.gameBoard)
-        
         for r in range(self.boardRows):
             for c in range(self.boardCols):
                 self.dictBoard[(r, c)] = "O"
+        self.printBoard()
+    
+    def printBoard(self):
+        for r in range(self.boardRows):
+            for c in range(self.boardCols):
                 print(self.dictBoard[(r,c)], end = " ")
             print()
 
@@ -43,6 +48,9 @@ class Minesweeper:
                 # if true will add a mine to the counter
                 self.countMines += 1
                 self.placeNums(mineRow, mineCols)
+
+    # def printMines(self):
+    #     print(self.dictSpace)
 
     # method will use the coordinates of the mines that are placed
     def placeNums(self, row, col):
@@ -70,35 +78,38 @@ class Minesweeper:
         # if mine is there at coordinate - game over
         if self.move in self.dictSpace:
             if self.dictSpace[self.move] != "*":
-                self.dictBoard.update({self.move : self.dictSpace[self.move]})
+                self.dictBoard[self.move] = self.dictSpace[self.move]
             else:
-                self.dictBoard.update({self.move : self.dictSpace[self.move]})
-                print(self.dictBoard[self.move])
+                self.dictBoard[self.move] = self.dictSpace[self.move]
+                self.printBoard()
                 print("Game Over!")
+                exit()
         elif self.move != self.dictSpace:
+            self.dictBoard[self.move] = " "
             self.uncoverSpace(self.move[0], self.move[1])
+        self.printBoard()
 
     def uncoverSpace(self, row, col):
-        spaceList = [(row - 1, col), (row, col - 1), (row, col + 1), (row + 1, col)]
+        spaceList = [(row - 1, col - 1), (row - 1, col), (row - 1, col + 1), (row, col - 1), (row, col + 1), (row + 1, col - 1), (row + 1, col), (row + 1, col + 1)]
         for space in spaceList:
             if space[0] < 0 or space[1] < 0 or space[0] > (self.boardRows - 1) or space[1] > (self.boardCols - 1):
                 continue
-            if space not in self.dictSpace:
-                self.dictBoard.update({space : " "})
-                self.uncoverSpace(space[0], space[1])
+            while self.dictBoard[space] == "O":
+                if space not in self.dictSpace:
+                    self.dictBoard[space] = " "
+                    self.uncoverSpace(space[0], space[1])
+                elif space in self.dictSpace and self.dictSpace[space] != "*":
+                    self.dictBoard[space] = self.dictSpace[space]
 
     def gamePlay(self):
-        self.makeBoard()
         self.placeMines()
+        # self.printMines()
         self.userMove()
         self.checkMove()
         self.gamePlay()
-            # if in dictSpace we KNOW that it is not a blank space
-            # if it is NOT in dictSpace - it IS a blank space
-                # needs to keep checking the spaces next to it until it hits a coord that is in dictSpace
-
 
 minesweeper = Minesweeper()
+minesweeper.makeBoard()
 minesweeper.gamePlay()
 
 # print out the board again so user can see what is available
