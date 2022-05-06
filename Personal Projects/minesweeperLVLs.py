@@ -5,15 +5,58 @@ import string
 
 class Minesweeper:
     # build board and define how many mines/level
-    boardRows = 16
-    boardCols = 16
-    numMines = 40
+    
     # flagMines = set()
     dictBoard = {}
     dictSpace = {}
     countMines = 0
     countFlags = 0
-    countSpaces = (boardRows * boardCols)
+    boardRows = 0
+    boardCols = 0
+    numMines = 0
+
+    def chooseLevel(self):
+        while True:
+            level = ["beginner", "intermediate", "advanced", "custom"]
+            choice = input("Please choose a level (Beginner, Intermediate): ").lower()
+            if choice in level:
+                if choice == level[0]:
+                    self.boardRows = 9
+                    self.boardCols = 9
+                    self.numMines = 10
+                    break
+                elif choice == level[1]:
+                    self.boardRows = 16
+                    self.boardCols = 16
+                    self.numMines = 40
+                    break
+                # elif choice == level[2]:
+                #     self.boardRows = 16
+                #     self.boardCols = 30
+                #     self.numMines = 99
+                #     break
+                # elif choice == level[3]:
+                #     while True:
+                #         try:
+                #             ### This causes the program to go on forever placing bombs :(
+                #             # self.boardRows = int(input("Please enter a number 1-80 for rows: "))
+                #             # self.boardCols = int(input("Please enter a number 1-80 for columns: "))
+                #             # self.numMines = int(input("Please enter a number 1-99 for bombs: "))
+                #             # if 0 < self.boardRows <= 80 and 0 < self.boardCols <= 80 and 0 < self.numMines <= 99 and self.numMines < (self.boardRows * self.boardCols) / 2:
+                #             #     break
+                #             self.boardRows = int(input("Please enter a number 1-20 for rows: "))
+                #             self.boardCols = int(input("Please enter a number 1-20 for columns: "))
+                #             self.numMines = int(input("Please enter a number 1-60 for bombs: "))
+                #             if 0 < self.boardRows <= 20 and 0 < self.boardCols <= 20 and 0 < self.numMines <= 60 and self.numMines < (self.boardRows * self.boardCols) / 2:
+                #                 break
+                #             else: 
+                #                 print("Can't make a board like that! D:")
+                #         except:
+                #             print("Can't make a board like that! D:")
+                #     break
+            else:
+                print("What kind of level is that?!?!?! >:O")
+
 
     def makeBoard(self):
             # beginner = 9x9 w/ 10 mines
@@ -27,6 +70,7 @@ class Minesweeper:
         for r in range(self.boardRows):
             for c in range(self.boardCols):
                 self.dictBoard[(r, c)] = "O"
+        self.countSpaces = (self.boardRows * self.boardCols)
         self.printBoard()
     
     def printBoard(self):
@@ -35,7 +79,7 @@ class Minesweeper:
                 print(self.dictBoard[(r,c)], end = " ")
             print()
 
-    def userMove(self): # TODO fix validity checker
+    def userMove(self):
         # when coordinate is inputed (row x column) checks the space
         while True:
             self.move = input("Please enter a 'coordinate' to uncover a space or 'X, coordinate' to place or remove a flag: ").upper()
@@ -50,6 +94,7 @@ class Minesweeper:
             elif len(self.move) == 3 and self.move[0] == "X":
                 try:
                     self.flag = tuple(map(int, self.move[1:]))
+                    print(self.flag)
                     self.placeFlags()
                 except:
                     print("*BOOM* No flag for you! >:D")
@@ -85,7 +130,7 @@ class Minesweeper:
                 self.dictSpace[coorMine] = "*"
                 # if true will add a mine to the counter
                 self.countMines += 1
-                self.placeNums(mineRow, mineCols)       
+                self.placeNums(mineRow, mineCols)
 
     # def printMines(self):
     #     print(self.dictSpace)
@@ -139,7 +184,7 @@ class Minesweeper:
                     self.countSpaces -= 1
                     
     def userWin(self):
-        if self.countSpaces == self.countMines:
+        if self.countSpaces == self.numMines:
             print("Congrats you won! :D")
             exit()
 
@@ -151,6 +196,7 @@ class Minesweeper:
         self.gamePlay()
 
 minesweeper = Minesweeper()
+minesweeper.chooseLevel()
 minesweeper.makeBoard()
 minesweeper.gamePlay()
 

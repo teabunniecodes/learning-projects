@@ -40,7 +40,10 @@ class tictactoe():
             while True:
                 try:
                     self.space = int(input(f"It is {self.player}'s turn. Please enter a number 1-9: "))
-                    break
+                    if 0 < self.space <= 9:
+                        break
+                    else:
+                        print(f"That's not a number between 1-9 Player {self.player}!!!! >:O")
                 except:
                     print(f"That's not a number between 1-9 Player {self.player}!!!! >:O")
             # checks if the board is empty in the space that the user has chosen
