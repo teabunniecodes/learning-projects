@@ -165,6 +165,7 @@ class Minesweeper:
                 if self.dictSpace[self.move] != "*":
                     self.dictBoard[self.move] = self.dictSpace[self.move]
                     self.countSpaces -= 1
+                    self.printBoard()
                 else:
                     self.dictBoard[self.move] = self.dictSpace[self.move]
                     self.printBoard()
@@ -174,11 +175,14 @@ class Minesweeper:
                 self.dictBoard[self.move] = " "
                 self.countSpaces -= 1
                 self.uncoverSpace(self.move[0], self.move[1])
-        elif self.dictBoard[self.flag] == "X" or self.dictBoard[self.flag] == "O":
-            pass
-        else:
+                self.printBoard()
+        elif self.dictBoard[self.move] != "O":
             print("You already uncovered this space -_-")
-        self.printBoard()
+        elif self.dictBoard[self.flag] == "X":
+            print("Uhmmm, you want to dig up a flag you put down??")
+        elif self.dictBoard[self.flag] == "O":
+            pass
+
 
     def uncoverSpace(self, row, col):
         spaceList = [(row - 1, col - 1), (row - 1, col), (row - 1, col + 1), (row, col - 1), (row, col + 1), (row + 1, col - 1), (row + 1, col), (row + 1, col + 1)]
