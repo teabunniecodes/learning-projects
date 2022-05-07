@@ -83,21 +83,21 @@ class Minesweeper:
     def userMove(self):
         # when coordinate is inputed (row x column) checks the space
         while True:
-            self.move = input("Please enter a 'coordinate' to uncover a space or 'X, coordinate' to place or remove a flag: ").upper()
-            self.move = self.move.translate(str.maketrans(string.punctuation, (" " * len(string.punctuation))))
-            self.move = self.move.split()
-            if len(self.move) == 2:
+            self.user = input("Please enter a 'coordinate' to uncover a space or 'X, coordinate' to place or remove a flag: ").upper()
+            self.user = self.user.translate(str.maketrans(string.punctuation, (" " * len(string.punctuation))))
+            self.user = self.user.split()
+            if len(self.user) == 2:
                 try:
-                    self.move = tuple(map(int, self.move))
+                    self.move = tuple(map(int, self.user))
                     if self.move in self.dictBoard:
                         break
                     else:
                         print("That's not even a space on the board >_>")
                 except:
                     print("NO! >:O")
-            elif len(self.move) == 3 and self.move[0] == "X":
+            elif len(self.user) == 3 and self.user[0] == "X":
                 try:
-                    self.flag = tuple(map(int, self.move[1:]))
+                    self.flag = tuple(map(int, self.user[1:]))
                     if self.flag in self.dictBoard:
                         self.placeFlags()
                         break
@@ -113,11 +113,9 @@ class Minesweeper:
             if self.dictBoard[self.flag] == "O":
                 self.dictBoard[self.flag] = "X"
                 self.countFlags += 1
-                self.printBoard()
             elif self.dictBoard[self.flag] == "X":
                 self.dictBoard[self.flag] = "O"
                 self.countFlags -= 1
-                self.printBoard()
             else:
                 pass
 
@@ -135,7 +133,7 @@ class Minesweeper:
                 pass
             # if the no mine / replace the space with mine
             # else:
-            elif coorMine not in self.dictSpace or (coorMine in self.dictSpace and self.dictSpace[coorMine] != "*"):
+            elif coorMine not in self.dictSpace or self.dictSpace[coorMine] != "*":
                 self.dictSpace[coorMine] = "*"
                 # if true will add a mine to the counter
                 self.countMines += 1
@@ -176,6 +174,8 @@ class Minesweeper:
                 self.dictBoard[self.move] = " "
                 self.countSpaces -= 1
                 self.uncoverSpace(self.move[0], self.move[1])
+        elif self.dictBoard[self.flag] == "X" or self.dictBoard[self.flag] == "O":
+            pass
         else:
             print("You already uncovered this space -_-")
         self.printBoard()
