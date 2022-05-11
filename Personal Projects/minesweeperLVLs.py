@@ -80,26 +80,30 @@ class Minesweeper:
                 print(self.dictBoard[(r,c)], end = " ")
             print()
 
-    def userMove(self):
+    def getUserMove(self):
         # when coordinate is inputed (row x column) checks the space
         while True:
             self.user = input("Please enter a 'coordinate' to uncover a space or 'X, coordinate' to place or remove a flag: ").upper()
             self.user = self.user.translate(str.maketrans(string.punctuation, (" " * len(string.punctuation))))
             self.user = self.user.split()
+            # determines if the user is inputting a space
             if len(self.user) == 2:
                 try:
                     self.move = tuple(map(int, self.user))
                     if self.move in self.dictBoard:
+                        self.isFlagging = False
                         break
                     else:
                         print("That's not even a space on the board >_>")
                 except:
                     print("NO! >:O")
+            # determines if a user is inputting a flag
             elif len(self.user) == 3 and self.user[0] == "X":
                 try:
                     self.flag = tuple(map(int, self.user[1:]))
                     if self.flag in self.dictBoard:
-                        self.placeFlags()
+                        self.placeFlag()
+                        self.isFlagging = True
                         break
                     else:
                         print("Sure. I can place a flag in the middle of nowhere for you! :D")
@@ -108,14 +112,16 @@ class Minesweeper:
             else:
                 print("Invalid input.  Please try again.")
 
-    def placeFlags(self):
+    def placeFlag(self):
         if self.countFlags <= self.numMines:
             if self.dictBoard[self.flag] == "O":
                 self.dictBoard[self.flag] = "X"
                 self.countFlags += 1
+                self.printBoard()
             elif self.dictBoard[self.flag] == "X":
                 self.dictBoard[self.flag] = "O"
                 self.countFlags -= 1
+                self.printBoard()
             else:
                 pass
 
@@ -159,29 +165,28 @@ class Minesweeper:
                 self.dictSpace[space] += 1
 
     def checkMove(self):
+        if self.isFlagging == False:
         # if mine is there at coordinate - game over
-        if self.dictBoard[self.move] == "O":
-            if self.move in self.dictSpace:
-                if self.dictSpace[self.move] != "*":
-                    self.dictBoard[self.move] = self.dictSpace[self.move]
-                    self.countSpaces -= 1
-                    self.printBoard()
+            if self.dictBoard[self.move] == "O":
+                if self.move in self.dictSpace:
+                    if self.dictSpace[self.move] != "*":
+                        self.dictBoard[self.move] = self.dictSpace[self.move]
+                        self.countSpaces -= 1
+                        self.printBoard()
+                    else:
+                        self.dictBoard[self.move] = self.dictSpace[self.move]
+                        self.printBoard()
+                        print("Game Over!")
+                        exit()
                 else:
-                    self.dictBoard[self.move] = self.dictSpace[self.move]
+                    self.dictBoard[self.move] = " "
+                    self.countSpaces -= 1
+                    self.uncoverSpace(self.move[0], self.move[1])
                     self.printBoard()
-                    print("Game Over!")
-                    exit()
-            else:
-                self.dictBoard[self.move] = " "
-                self.countSpaces -= 1
-                self.uncoverSpace(self.move[0], self.move[1])
-                self.printBoard()
-        elif self.dictBoard[self.move] != "O":
-            print("You already uncovered this space -_-")
-        elif self.dictBoard[self.flag] == "X":
-            print("Uhmmm, you want to dig up a flag you put down??")
-        elif self.dictBoard[self.flag] == "O":
-            pass
+            elif self.dictBoard[self.move] == "X":
+                print("Uhmmm, you want to dig up a flag you put down??")
+            elif self.dictBoard[self.move] != "O":
+                print("You already uncovered this space -_-")
 
 
     def uncoverSpace(self, row, col):
@@ -205,15 +210,14 @@ class Minesweeper:
 
     def gamePlay(self):
         self.userWin()
-        self.userMove()
+        self.getUserMove()
         self.checkMove()
         self.gamePlay()
 
     def startGame(self):
         self.chooseLevel()
         self.makeBoard()
-        self.userWin()
-        self.userMove()
+        self.getUserMove()
         self.placeMines()
         self.checkMove()
         self.gamePlay()
