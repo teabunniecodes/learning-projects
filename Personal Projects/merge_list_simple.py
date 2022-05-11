@@ -1,5 +1,7 @@
 # Personal Projects/Text Files/number_list.txt
-# Python/Self Projects/Text Files/number_list.txt 
+# Python/Self Projects/Text Files/number_list.txt
+# 
+# This was coded by Eccentrikit :D 
 
 file = input("Path of text file: ")
 
