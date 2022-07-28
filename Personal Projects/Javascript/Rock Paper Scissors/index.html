@@ -1,0 +1,39 @@
+<!-- Look up why we need !DOCTYPE -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- charset attribute specifies the character encoding for the HTML document. The HTML5 specification encourages web developers to use the UTF-8 character set, which covers almost all of the characters and symbols in the world -->
+        <meta charset="utf-8">
+        <title>Rock Paper Scissor</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <header>
+            <h1>Rock Paper Scissor</h1>
+        </header>
+
+        <div class="score-board">
+            <div id="user-label" class="badge">user</div>
+            <div id="computer-label" class="badge">comp</div>
+            <span id="user-score">0</span>:<span id="computer-score">0</span>
+        </div>
+
+        <div class="result">
+            <p>Let's Play!</p>
+        </div>
+
+        <div class="choices">
+            <div id="r" class="choice">
+                <img src="images/rock.png">
+            </div>
+            <div id="p" class="choice">
+                <img src="images/paper.png">
+            </div>
+            <div id="s" class="choice">
+                <img src="images/scissor.png">
+            </div>
+        </div>
+        <p id="action-message">Make your move</p>
+        <script src="app.js" charset="utf-8"></script>
+    </body>
+</html>
