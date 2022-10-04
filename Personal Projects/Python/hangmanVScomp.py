@@ -10,7 +10,7 @@ class hangMan:
 
     def getWord(self):
         # computer pulls random word from file
-        with open("Personal Projects\Text Files\wordlist.txt") as read:
+        with open("..\Personal Projects\Text Files\wordlist.txt") as read:
             words = list(map(str, read))
             self.chosenWord = random.choice(words).strip()
             self.chosenWord = self.chosenWord.upper()
